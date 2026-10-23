@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Volna — вход</title>
+<style>
+@font-face { font-family: "Unbounded"; src: url("fonts/unbounded-cyrillic-wght-normal.woff2") format("woff2"); font-weight: 200 900; unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: "Unbounded"; src: url("fonts/unbounded-latin-wght-normal.woff2") format("woff2"); font-weight: 200 900; }
+@font-face { font-family: "Manrope"; src: url("fonts/manrope-cyrillic-wght-normal.woff2") format("woff2"); font-weight: 200 800; unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: "Manrope"; src: url("fonts/manrope-latin-wght-normal.woff2") format("woff2"); font-weight: 200 800; }
+:root { --void: #060a16; --panel: #0d1428; --panel-2: #141d37; --panel-3: #1c2748; --foam: #eef1fb; --mist: #9099b8; --moon: #a8bcff; --danger: #ff9a9a; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { background: var(--void); color: var(--foam); font: 500 15px/1.45 "Manrope", "Segoe UI", sans-serif; overflow: hidden; user-select: none;
+  display: grid; place-items: center; }
+.bg { position: fixed; inset: -20%; z-index: -1; filter: blur(70px); opacity: .7;
+  background: radial-gradient(40% 40% at 25% 30%, rgba(143,168,255,.45), transparent 70%),
+              radial-gradient(35% 40% at 75% 70%, rgba(195,139,255,.4), transparent 70%),
+              radial-gradient(30% 30% at 70% 20%, rgba(255,143,177,.25), transparent 70%);
+  animation: drift 18s ease-in-out infinite alternate; }
+@keyframes drift { to { transform: translate(4%, -3%) rotate(8deg); } }
+.box { width: min(760px, 92vw); text-align: center; animation: up .6s cubic-bezier(.22,.8,.25,1) both; }
+@keyframes up { from { transform: translateY(16px); opacity: 0; } }
+.logo { width: 56px; height: 56px; border-radius: 16px; margin-bottom: 18px; }
+h1 { font: 800 40px/1.1 "Unbounded", sans-serif; letter-spacing: -.02em; }
+.sub { color: var(--mist); margin: 10px 0 34px; font-size: 16px; }
+.people { display: flex; flex-wrap: wrap; gap: 22px; justify-content: center; }
+.p { width: 132px; cursor: pointer; border: 0; background: none; color: inherit; font: inherit; transition: transform .25s cubic-bezier(.34,1.5,.5,1); }
+.p:hover { transform: translateY(-4px); }
+.av { width: 112px; height: 112px; margin: 0 auto 12px; border-radius: 30%; display: grid; place-items: center; position: relative;
+  font: 800 44px "Unbounded", sans-serif; color: #0b1024; background: var(--c);
+  box-shadow: 0 18px 40px -16px var(--c), inset 0 0 0 3px rgba(255,255,255,.18); transition: box-shadow .2s, border-radius .3s; }
+.p:hover .av, .p.on .av { box-shadow: 0 22px 50px -14px var(--c), 0 0 0 3px var(--foam); border-radius: 26%; }
+.p .lock { position: absolute; right: -4px; bottom: -4px; width: 30px; height: 30px; border-radius: 50%; background: var(--panel-3);
+  display: grid; place-items: center; box-shadow: 0 0 0 3px var(--void); }
+.p .lock svg { width: 15px; height: 15px; stroke: var(--foam); fill: none; stroke-width: 2.2; }
+.p b { display: block; font-weight: 800; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.add .av { background: var(--panel-2); color: var(--mist); box-shadow: inset 0 0 0 2px rgba(168,188,255,.2); font-size: 50px; font-weight: 300; }
+.add:hover .av { box-shadow: inset 0 0 0 2px var(--foam); color: var(--foam); }
+form { margin: 30px auto 0; width: min(380px, 90vw); display: grid; gap: 12px; animation: up .35s cubic-bezier(.22,.8,.25,1) both; }
+input { width: 100%; height: 50px; padding: 0 18px; border-radius: 14px; border: 1.5px solid rgba(168,188,255,.14); background: var(--panel);
+  color: var(--foam); font: inherit; font-size: 16px; outline: 0; }
+input:focus { border-color: var(--foam); }
+.btn { height: 50px; border-radius: 999px; border: 0; font: 800 16px "Manrope", sans-serif; cursor: pointer; background: var(--foam); color: var(--void);
+  transition: transform .15s; }
+.btn:hover { transform: scale(1.02); }
+.btn:disabled { opacity: .5; transform: none; }
+.link { background: none; border: 0; color: var(--mist); font: inherit; cursor: pointer; margin-top: 4px; }
+.link:hover { color: var(--foam); }
+.err { color: var(--danger); min-height: 22px; font-weight: 700; }
+.hint { color: var(--mist); font-size: 13px; }
+.shake { animation: shake .35s; }
+@keyframes shake { 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="box" id="box"></div>
+<script>
+"use strict";
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const LOCK = '<svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
+let api = null, rid = 0, state = null, picked = null;
+const pending = new Map();
+function call(method, args = {}) {
+  return new Promise((ok, bad) => { const id = ++rid; pending.set(id, { ok, bad }); api.call(id, method, JSON.stringify(args)); });
+}
+function onReply(id, json) {
+  const p = pending.get(id); if (!p) return; pending.delete(id);
+  const r = JSON.parse(json); r.ok ? p.ok(r.data) : p.bad(new Error(r.error || "Ошибка"));
+}
+const initial = (n) => esc((n || "?").trim()[0].toUpperCase());
+
+function people() {
+  const st = state;
+  $("#box").innerHTML = `<img class="logo" src="../assets/icon.png" alt="">
+    <h1>Кто слушает?</h1><div class="sub">У каждого своя медиатека, своя волна и свои настройки</div>
+    <div class="people">${st.accounts.map((a) => `<button class="p${picked === a.id ? " on" : ""}" data-id="${a.id}" style="--c:${a.color}">
+      <div class="av">${initial(a.name)}${a.locked ? `<span class="lock">${LOCK}</span>` : ""}</div><b>${esc(a.name)}</b></button>`).join("")}
+      <button class="p add" data-new><div class="av">+</div><b>Новый аккаунт</b></button></div>
+    <div id="pw"></div>`;
+  document.querySelectorAll(".p[data-id]").forEach((b) => b.onclick = () => pick(b.dataset.id));
+  $("[data-new]").onclick = () => createForm();
+  if (picked) pick(picked);
+}
+function pick(id) {
+  picked = id;
+  const a = state.accounts.find((x) => x.id === id);
+  document.querySelectorAll(".p").forEach((b) => b.classList.toggle("on", b.dataset.id === id));
+  if (!a.locked) { enter(id, ""); return; }
+  $("#pw").innerHTML = `<form id="f"><input id="pass" type="password" placeholder="Пароль для «${esc(a.name)}»" autocomplete="current-password">
+    <button class="btn" id="go">Войти</button><div class="err" id="err"></div></form>`;
+  $("#pass").focus();
+  $("#f").onsubmit = (e) => { e.preventDefault(); enter(id, $("#pass").value); };
+}
+function enter(id, pw) {
+  const go = $("#go"); if (go) go.disabled = true;
+  call("login", { id, password: pw }).catch((e) => {
+    const err = $("#err"); if (err) err.textContent = e.message;
+    const f = $("#f"); if (f) { f.classList.remove("shake"); void f.offsetWidth; f.classList.add("shake"); }
+    if (go) go.disabled = false; const p = $("#pass"); if (p) { p.value = ""; p.focus(); }
+  });
+}
+function createForm() {
+  const first = !state.accounts.length;
+  $("#box").innerHTML = `<img class="logo" src="../assets/icon.png" alt="">
+    <h1>${first ? "Добро пожаловать" : "Новый аккаунт"}</h1>
+    <div class="sub">${state.legacy ? "Твоя медиатека, лайки и настройки перейдут в этот аккаунт" : "Своя медиатека, своя волна, свой вход в Яндекс"}</div>
+    <form id="f"><input id="name" placeholder="Как тебя зовут?" maxlength="32" autocomplete="nickname">
+      <input id="p1" type="password" placeholder="Пароль (можно не ставить)" autocomplete="new-password">
+      <input id="p2" type="password" placeholder="Пароль ещё раз" autocomplete="new-password">
+      <div class="hint">Без пароля вход будет в один клик. Пароль защищает аккаунт от входа в приложении — файлы на диске он не шифрует.</div>
+      <button class="btn" id="go">${first ? "Начать" : "Создать"}</button><div class="err" id="err"></div>
+      ${first ? "" : `<button type="button" class="link" id="back">← Назад</button>`}</form>`;
+  $("#name").focus();
+  if (!first) $("#back").onclick = people;
+  $("#f").onsubmit = (e) => {
+    e.preventDefault();
+    const name = $("#name").value.trim(), p1 = $("#p1").value, p2 = $("#p2").value;
+    if (p1 !== p2) { $("#err").textContent = "Пароли не совпадают"; return; }
+    $("#go").disabled = true;
+    call("create", { name, password: p1 }).then((a) => enter(a.id, p1)).catch((err) => { $("#err").textContent = err.message; $("#go").disabled = false; });
+  };
+}
+function boot() {
+  call("state").then((st) => { state = st; if (!st.accounts.length) createForm(); else people(); });
+}
+if (window.__MOCK_AUTH__) { api = window.__MOCK_AUTH__(onReply); boot(); }
+else new QWebChannel(qt.webChannelTransport, (ch) => { api = ch.objects.auth; api.reply.connect(onReply); boot(); });
+</script>
+</body>
+</html>

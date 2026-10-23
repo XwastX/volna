@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Volna</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="appearance.css">
+<link rel="stylesheet" href="extras.css">
+<link rel="stylesheet" href="more.css">
+</head>
+<body class="paused">
+<div id="app">
+  <!-- левая колонка -->
+  <div class="side">
+    <nav class="panel nav-box">
+      <div class="brand"><img src="../assets/icon.png" alt=""><b>Volna</b></div>
+      <button class="nav" data-go="home"><i data-i="house"></i><span>Главная</span></button>
+      <button class="nav" data-go="wave"><i data-i="waves"></i><span>Моя волна</span></button>
+      <button class="nav" data-go="search"><i data-i="search"></i><span>Поиск</span></button>
+      <button class="nav" data-go="stats"><i data-i="chart-column"></i><span>Статистика</span></button>
+      <button class="nav" data-go="dna"><i data-i="dna"></i><span>Музыкальная ДНК</span></button>
+      <button class="nav" data-go="party"><i data-i="party-popper"></i><span>Вечеринка</span><em class="nav-live" id="party-live" hidden>LIVE</em></button>
+      <button class="nav" data-go="settings"><i data-i="settings"></i><span>Настройки</span></button>
+    </nav>
+    <section class="panel lib-box">
+      <div class="lib-head">
+        <b><i data-i="library"></i><span>Моя медиатека</span></b>
+        <button class="icon-btn" id="new-pl" title="Создать плейлист"><i data-i="plus"></i></button>
+        <button class="icon-btn" data-go="import" title="Добавить музыку"><i data-i="download"></i></button>
+      </div>
+      <div class="lib-list" id="lib-list"></div>
+    </section>
+  </div>
+
+  <!-- центр -->
+  <main class="panel main">
+    <div class="topbar" id="topbar">
+      <button class="round" id="back" title="Назад"><i data-i="chevron-left"></i></button>
+      <button class="round" id="fwd" title="Вперёд"><i data-i="chevron-right"></i></button>
+      <div class="title" id="top-title"></div>
+      <div class="spacer"></div>
+      <label class="searchbox" id="searchbox"><i data-i="search"></i>
+        <input id="q" placeholder="Что хочешь послушать?" autocomplete="off">
+        <button class="icon-btn clear" id="q-clear" title="Очистить"><i data-i="x"></i></button></label>
+      <button class="pill" id="offline-pill" title="Офлайн-режим: играть только скачанное"><i data-i="wifi"></i></button>
+      <button class="pill" data-go="library" title="Медиатека"><i data-i="library"></i></button>
+      <button class="pill" data-go="import" title="Импорт музыки"><i data-i="download"></i></button>
+    </div>
+    <div id="view"></div>
+  </main>
+
+  <!-- правая колонка -->
+  <aside class="panel right" id="right">
+    <div class="rhead">
+      <div class="tabs"><button data-tab="now" class="on">Сейчас</button><button data-tab="lyrics">Текст</button><button data-tab="queue">Очередь</button></div>
+      <button class="icon-btn" id="right-close" title="Скрыть"><i data-i="x"></i></button>
+    </div>
+    <div class="rbody" id="rbody"></div>
+  </aside>
+
+  <!-- плеер -->
+  <footer class="player">
+    <div class="p-left">
+      <div class="cover" id="p-cover" title="Развернуть"></div>
+      <div class="meta"><div class="t idle" id="p-t">Ничего не играет</div><a class="a" id="p-a"></a></div>
+      <button class="icon-btn heart" id="p-like" title="Нравится"><i data-i="heart"></i></button>
+    </div>
+    <div class="p-mid">
+      <div class="ctrls" data-ctrls>
+        <button class="icon-btn" data-act="dislike" title="Не нравится — такого будет меньше"><i data-i="thumbs-down"></i></button>
+        <button class="icon-btn skip" data-act="prev" title="Назад"><i data-i="skip-back"></i></button>
+        <button class="play" data-act="toggle" title="Играть"><i data-i="play"></i></button>
+        <button class="icon-btn skip" data-act="next" title="Дальше"><i data-i="skip-forward"></i></button>
+        <button class="icon-btn" data-act="wavehere" title="Волна по этому треку"><i data-i="radio"></i></button>
+      </div>
+      <div class="seek"><span class="tm" data-pos>0:00</span><canvas id="scrub"></canvas><span class="tm" data-dur>0:00</span></div>
+    </div>
+    <div class="p-right">
+      <span class="wave-badge" id="wave-badge"><i data-i="waves"></i><span></span></span>
+      <button class="icon-btn" id="btn-lyrics" title="Текст песни"><i data-i="mic-vocal"></i></button>
+      <button class="icon-btn" id="btn-now" title="Сейчас играет"><i data-i="panel-right"></i></button>
+      <button class="icon-btn" id="btn-queue" title="Очередь"><i data-i="list-video"></i></button>
+      <button class="icon-btn" id="mute" title="Звук"><i data-i="volume-2"></i></button>
+      <input class="vol" id="vol" type="range" min="0" max="100" value="70">
+      <button class="icon-btn" id="btn-sleep" title="Таймер сна"><i data-i="moon"></i></button>
+      <button class="icon-btn" id="btn-mini" title="Мини-плеер поверх окон"><i data-i="picture-in-picture-2"></i></button>
+      <button class="icon-btn" id="btn-full" title="Во весь экран"><i data-i="maximize-2"></i></button>
+    </div>
+  </footer>
+</div>
+
+<!-- полноэкранный плеер -->
+<div id="now">
+  <div class="blur" id="now-blur"></div><div class="shade"></div>
+  <div class="top"><span id="now-ctx"></span><button class="icon-btn" id="now-close" title="Свернуть (Esc)"><i data-i="chevron-down"></i></button></div>
+  <div class="stage">
+    <div class="np-left"><div class="cover" id="now-cover"></div>
+      <div><div class="t" id="now-t"></div><a class="a" id="now-a"></a></div></div>
+    <div class="lyrics big" id="now-lyrics"></div>
+  </div>
+  <canvas id="now-spectrum"></canvas>
+  <div class="dock">
+    <div class="seek"><span class="tm" data-pos>0:00</span><canvas id="now-scrub"></canvas><span class="tm" data-dur>0:00</span></div>
+    <div class="rowc">
+      <button class="icon-btn heart" id="now-like" title="Нравится"><i data-i="heart"></i></button>
+      <div class="ctrls" data-ctrls>
+        <button class="icon-btn" data-act="dislike" title="Не нравится"><i data-i="thumbs-down"></i></button>
+        <button class="icon-btn skip" data-act="prev"><i data-i="skip-back"></i></button>
+        <button class="play" data-act="toggle"><i data-i="play"></i></button>
+        <button class="icon-btn skip" data-act="next"><i data-i="skip-forward"></i></button>
+        <button class="icon-btn" data-act="wavehere" title="Волна по этому треку"><i data-i="radio"></i></button>
+      </div>
+      <button class="icon-btn" id="now-open" title="Открыть на SoundCloud"><i data-i="external-link"></i></button>
+    </div>
+  </div>
+</div>
+
+<div id="recap"></div>
+<div id="modal"></div>
+<div id="toasts"></div>
+
+<script src="icons.js"></script>
+<script src="core.js"></script>
+<script src="player.js"></script>
+<script src="appearance.js"></script>
+<script src="yandex.js"></script>
+<script src="extras.js"></script>
+<script src="more.js"></script>
+<script src="pages.js"></script>
+</body>
+</html>

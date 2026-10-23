@@ -1,0 +1,19 @@
+PySide6>=6.6
+requests>=2.31
+# свой звуковой движок: кроссфейд, эквалайзер, выравнивание громкости, спектр
+av>=14
+sounddevice>=0.5
+numpy>=1.26
+scipy>=1.11
+# Яндекс Музыка (вход в аккаунт)
+yandex-music>=3.2.2
+# статус в Discord
+pypresence>=4.6
+# окно музыки Windows и медиаклавиши
+winrt-runtime>=3.2; sys_platform == "win32"
+winrt-Windows.Foundation>=3.2; sys_platform == "win32"
+winrt-Windows.Media>=3.2; sys_platform == "win32"
+winrt-Windows.Media.Playback>=3.2; sys_platform == "win32"
+winrt-Windows.Storage.Streams>=3.2; sys_platform == "win32"
+# QR-код для режима вечеринки
+qrcode>=7.4

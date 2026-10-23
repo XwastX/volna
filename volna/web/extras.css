@@ -1,0 +1,57 @@
+/* extras.css */
+/* командная палитра */
+#palette { position: fixed; inset: 0; z-index: 90; background: rgba(3,6,14,.55); display: grid; justify-items: center; align-items: start;
+  padding-top: 12vh; animation: fadein .15s; }
+.pal-box { width: min(640px, 92vw); background: var(--panel-3); border-radius: 14px; box-shadow: 0 30px 80px -20px #000;
+  overflow: hidden; animation: dlg .25s var(--spring); border: 1px solid var(--line-2); }
+.pal-in { display: flex; align-items: center; gap: 12px; padding: 0 16px; border-bottom: 1px solid var(--line-2); color: var(--mist); }
+.pal-in input { flex: 1; background: none; border: 0; outline: 0; font-size: 17px; font-weight: 600; padding: 17px 0; color: var(--foam); }
+.pal-in input::placeholder { color: var(--mist-2); }
+#pal-list { max-height: 52vh; overflow-y: auto; padding: 6px; }
+.pal-it { display: flex; align-items: center; gap: 12px; width: 100%; padding: 8px 10px; border-radius: 8px; }
+.pal-it.on { background: var(--panel-4); }
+.pal-it .cover { width: 38px; height: 38px; border-radius: 6px; }
+.pal-ic { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 8px; background: rgba(168,188,255,.08); color: var(--mist); flex: none; }
+.pal-it.on .pal-ic { color: var(--tint); }
+.pal-tx { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.pal-tx b { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pal-tx small { color: var(--mist); font-size: 12.5px; }
+.pal-it kbd { opacity: 0; }
+.pal-it.on kbd { opacity: 1; }
+kbd { font: 700 11px/1 var(--text); color: var(--mist); background: rgba(168,188,255,.1); border-radius: 5px; padding: 4px 6px; }
+.pal-empty { padding: 22px; color: var(--mist); text-align: center; }
+.pal-foot { display: flex; gap: 18px; padding: 10px 16px; border-top: 1px solid var(--line-2); color: var(--mist-2); font-size: 12px; font-weight: 600; }
+.pal-foot span:last-child { margin-left: auto; }
+
+/* умные плейлисты */
+.smart-cover { position: relative; width: 100%; height: 100%; }
+.smart-cover .mosaic { width: 100%; height: 100%; }
+.smart-cover > span { position: absolute; right: 6%; bottom: 6%; width: 32%; height: 32%; min-width: 18px; min-height: 18px; border-radius: 50%;
+  background: var(--tint); color: var(--void); display: grid; place-items: center; box-shadow: 0 4px 14px rgba(0,0,0,.5); z-index: 3; }
+.smart-cover > span svg.i { width: 58%; height: 58%; }
+.li .smart-cover { width: 48px; height: 48px; border-radius: 7px; overflow: hidden; flex: none; }
+.smart-rules { color: rgba(238,241,251,.65); font-size: 13.5px; }
+.sm-dialog { width: 640px; max-height: 88vh; overflow-y: auto; }
+.sm-match { color: var(--mist); font-weight: 600; margin-bottom: 10px; }
+.sm-rule { display: grid; grid-template-columns: 1.3fr 1fr 1fr 34px; gap: 8px; align-items: center; margin-bottom: 8px; }
+.sm-dialog select, .sm-dialog input[type=number], .sm-rule input { background: var(--panel-2); border: 1.5px solid var(--line); border-radius: 9px;
+  color: var(--foam); font: 600 13.5px var(--text); padding: 8px 10px; outline: 0; min-width: 0; }
+.sm-dialog select:focus, .sm-dialog input:focus { border-color: var(--foam); }
+.sm-row2 { display: flex; gap: 20px; margin-top: 16px; color: var(--mist); font-weight: 600; flex-wrap: wrap; }
+.sm-row2 label { display: flex; align-items: center; gap: 8px; }
+.sm-row2 input { width: 80px; }
+.sm-preview { margin-top: 16px; padding: 12px 14px; border-radius: 10px; background: var(--panel-2); color: var(--mist); font-size: 13px; line-height: 1.6; }
+.sm-preview b { display: block; color: var(--foam); font: 700 15px var(--display); margin-bottom: 4px; }
+
+/* last.fm и обновления */
+.lfm-me { display: flex; gap: 14px; align-items: center; }
+.lfm-me .cover { width: 48px; height: 48px; }
+.set-row .field { flex: 1; }
+#upd-banner { position: fixed; z-index: 85; top: 16px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 14px;
+  padding: 12px 12px 12px 18px; border-radius: 14px; background: linear-gradient(120deg, #4b2fd0, #c23a7a 70%, #ff8a3d); color: #fff;
+  box-shadow: 0 20px 50px -16px #000; animation: toastin .4s var(--spring); max-width: min(720px, 92vw); }
+#upd-banner > svg.i { width: 28px; height: 28px; }
+#upd-banner b { display: block; font: 700 15px var(--display); }
+#upd-banner span { font-size: 13px; opacity: .9; }
+#upd-banner .icon-btn { color: #fff; }
+.tag.ym { color: #ffd23f; }

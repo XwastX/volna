@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+build/
+dist/
+*.spec
+
+mobile/node_modules/
+mobile/www/
+mobile/android/
+*.apk
+secrets-*.txt
+*.jks
+*.keystore

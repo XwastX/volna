@@ -1,0 +1,17 @@
+{
+  "appId": "ru.volna.player",
+  "appName": "Volna",
+  "webDir": "www",
+  "android": {
+    "backgroundColor": "#060a16",
+    "allowMixedContent": false
+  },
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "CapacitorHttp": { "enabled": false },
+    "SplashScreen": { "launchShowDuration": 600, "backgroundColor": "#060a16", "showSpinner": false },
+    "StatusBar": { "backgroundColor": "#060a16", "style": "DARK", "overlaysWebView": false }
+  }
+}
